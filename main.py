@@ -1,5 +1,5 @@
 import streamlit as st
-from openai import OpenAI
+# from openai import OpenAI
 # from prompt import translate_prompt, transcribe_prompt
 import gradio as gr
 import os
