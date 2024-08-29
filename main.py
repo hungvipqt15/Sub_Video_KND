@@ -21,9 +21,8 @@ openai_api_key = st.sidebar.text_input("OpenAI API Key", type="password")
 
 
 def MP4ToMP3(mp4, mp3):
-    FILETOCONVERT = AudioFileClip(mp4)
-    FILETOCONVERT.write_audiofile(mp3)
-    # FILETOCONVERT.close()
+    video = VideoFileClip("example.mp4")
+    video.audio.write_audiofile("audio.mp3")
 
 
 
