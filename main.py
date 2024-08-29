@@ -12,7 +12,7 @@ openai_api_key = st.sidebar.text_input("OpenAI API Key", type="password")
 
 # upload audio file with streamlit
 with st.form("my_form"):
-    upload_file = st.file_uploader("Upload Mp4 File", type=["mp4"])
+    upload_file = st.file_uploader("Upload Mp4 File", type=["mp4"]).name
 
     submitted = st.form_submit_button("Submit")
     #################################################3
