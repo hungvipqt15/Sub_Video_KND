@@ -4,6 +4,7 @@ import subprocess
 from openai import OpenAI
 from prompt import transcribe_prompt
 import os
+from whisper.utils import get_writer
 
 st.title("Generate Subtitle App")
 
@@ -44,9 +45,24 @@ with st.form("my_form"):
         {"role": "user", "content": str(result)},
     ]
     )
+    message = response.choices[0].message.content
+    result = eval(message)
+    output_dir = ''
+    audio_path = audio_file.split(".")[0]
+    srt = os.path.join(output_dir, audio_path + ".srt")
+    writer = get_writer("srt", output_dir)
+    writer(result, srt)
+
+    subtitle = audio_path + ".vtt"
+    output_video = audio_path + "_subtitled.mp4"
+
+    st.video("sintel-short.mp4", subtitles=subtitle.name)
+
+
+
+
     submitted = st.form_submit_button("Submit")
-    st.write("### Answer")
-    st.info(result['text'])
+    
 
 
 
