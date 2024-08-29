@@ -42,10 +42,11 @@ with st.form("my_form"):
         input_video = upload_file.name
         print(input_video)
         # audio_file = video2mp3(input_video)
-        with open(input, "wb") as f:
+        input_path = "temp_video.mp4"
+        with open(input_path, "wb") as f:
             f.write(upload_file.getbuffer())
-            st.success("File uploaded successfully!")
-        video_clip = VideoFileClip(input)
+        st.success("File uploaded successfully!")
+        video_clip = VideoFileClip(input_path)
         audio_clip = video_clip.audio
         audio_file_path=audio_clip.write_audiofile("output_audio.mp3")
         # MP4ToMP3(input_video, audio_file_path)
