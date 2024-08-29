@@ -11,10 +11,9 @@ st.title("Generate Subtitle App")
 openai_api_key = st.sidebar.text_input("OpenAI API Key", type="password")
 
 # upload audio file with streamlit
-with st.form("my_form"):
+with st.form("my_form") as form:
     upload_file = st.file_uploader("Upload Mp4 File", type=["mp4"]).name
 
-    submitted = st.form_submit_button("Submit")
     #################################################3
     model = whisper.load_model("base")
 
@@ -59,7 +58,7 @@ with st.form("my_form"):
     st.video("sintel-short.mp4", subtitles=subtitle.name)
 
 
-
+form.form_submit_button("Submit")
 
     
     
