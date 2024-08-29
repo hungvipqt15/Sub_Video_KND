@@ -39,14 +39,14 @@ with st.form("my_form"):
         audio_file_path = "audio.mp3"
 
 
-        input_video = upload_file.name
-        print(input_video)
+        # input_video = upload_file.name
+        # print(input_video)
         # audio_file = video2mp3(input_video)
-        input_path = "temp_video.mp4"
-        with open(input_path, "wb") as f:
+        input_video = "video.mp4"
+        with open(input_video, "wb") as f:
             f.write(upload_file.getbuffer())
         st.success("File uploaded successfully!")
-        video_clip = VideoFileClip(input_path)
+        video_clip = VideoFileClip(input_video)
         audio_clip = video_clip.audio
         audio_file_path=audio_clip.write_audiofile("output_audio.mp3")
         # MP4ToMP3(input_video, audio_file_path)
@@ -58,6 +58,7 @@ with st.form("my_form"):
             result = model.transcribe(audio_file,**translate_options)
             return result
 
+        print("path: ", audio_file_path)
         result = translate(audio_file_path)
         client = OpenAI(api_key=openai_api_key)
         response = client.chat.completions.create(
