@@ -42,7 +42,13 @@ with st.form("my_form"):
         input_video = upload_file.name
         print(input_video)
         # audio_file = video2mp3(input_video)
-        MP4ToMP3(input_video, audio_file_path)
+        with open(input, "wb") as f:
+            f.write(upload_file.getbuffer())
+            st.success("File uploaded successfully!")
+        video_clip = VideoFileClip(input)
+        audio_clip = video_clip.audio
+        audio_file_path=audio_clip.write_audiofile("output_audio.mp3")
+        # MP4ToMP3(input_video, audio_file_path)
 
         def translate(audio_file):
 
