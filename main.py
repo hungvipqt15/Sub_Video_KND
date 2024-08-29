@@ -10,6 +10,14 @@ st.title("Generate Subtitle App")
 
 openai_api_key = st.sidebar.text_input("OpenAI API Key", type="password")
 
+def video2mp3(video_file, output_ext="mp3"):
+    filename, ext = os.path.splitext(video_file)
+    subprocess.call(["ffmpeg", "-y", "-i", video_file, f"{filename}.{output_ext}"],
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.STDOUT)
+    return f"{filename}.{output_ext}"
+
+
 # upload audio file with streamlit
 with st.form("my_form"):
     upload_file = st.file_uploader("Upload Mp4 File", type=["mp4"])
@@ -21,12 +29,7 @@ with st.form("my_form"):
 
         model = whisper.load_model("base")
 
-        def video2mp3(video_file, output_ext="mp3"):
-            filename, ext = os.path.splitext(video_file)
-            subprocess.call(["ffmpeg", "-y", "-i", video_file, f"{filename}.{output_ext}"],
-                            stdout=subprocess.DEVNULL,
-                            stderr=subprocess.STDOUT)
-            return f"{filename}.{output_ext}"
+
 
         input_video = upload_file.name
 
