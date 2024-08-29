@@ -14,7 +14,7 @@ openai_api_key = st.sidebar.text_input("OpenAI API Key", type="password")
 with st.form("my_form"):
     upload_file = st.file_uploader("Upload Mp4 File", type=["mp4"])
 
-
+    submitted = st.form_submit_button("Submit")
     #################################################3
     model = whisper.load_model("base")
 
@@ -61,7 +61,7 @@ with st.form("my_form"):
 
 
 
-    submitted = st.form_submit_button("Submit")
+    
     
 
 
