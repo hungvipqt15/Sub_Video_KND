@@ -4,7 +4,7 @@ import whisper
 st.title("Whisper App")
 
 # upload audio file with streamlit
-audio_file = st.file_uploader("Upload Audio", type=["wav", "mp3", "m4a"])
+audio_file = st.file_uploader("Upload Mp4 File", type=["mp4"])
 
 model = whisper.load_model("base")
 st.text("Whisper Model Loaded")
