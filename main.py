@@ -71,7 +71,7 @@ with st.form("my_form"):
         subtitle = audio_path + ".vtt"
         output_video = audio_path + "_subtitled.mp4"
 
-        st.video("sintel-short.mp4", subtitles=subtitle.name)
+        st.video(input_video, subtitles=subtitle.name)
 
     
     
