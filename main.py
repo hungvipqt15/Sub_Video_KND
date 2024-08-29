@@ -1,24 +1,65 @@
 import streamlit as st
 import whisper
+import subprocess
+from openai import OpenAI
+from prompt import transcribe_prompt
+import os
 
-st.title("Whisper App")
+st.title("Generate Subtitle App")
+
+openai_api_key = st.sidebar.text_input("OpenAI API Key", type="password")
 
 # upload audio file with streamlit
-audio_file = st.file_uploader("Upload Mp4 File", type=["mp4"])
-
-model = whisper.load_model("base")
-st.text("Whisper Model Loaded")
+with st.form("my_form"):
+    upload_file = st.file_uploader("Upload Mp4 File", type=["mp4"])
 
 
-if st.sidebar.button("Transcribe Audio"):
-    if audio_file is not None:
-        st.sidebar.success("Transcribing Audio")
-        transcription = model.transcribe(audio_file.name)
-        st.sidebar.success("Transcription Complete")
-        st.markdown(transcription["text"])
-    else:
-        st.sidebar.error("Please upload an audio file")
+    #################################################3
+    model = whisper.load_model("base")
+
+    def video2mp3(video_file, output_ext="mp3"):
+        filename, ext = os.path.splitext(video_file)
+        subprocess.call(["ffmpeg", "-y", "-i", video_file, f"{filename}.{output_ext}"],
+                        stdout=subprocess.DEVNULL,
+                        stderr=subprocess.STDOUT)
+        return f"{filename}.{output_ext}"
+
+    input_video = upload_file
+
+    audio_file = video2mp3(input_video)
+
+    def translate(audio):
+
+        options = dict(beam_size=5, best_of=5)
+        translate_options = dict(task="transcribe", **options)
+        result = model.transcribe(audio_file,**translate_options)
+        return result
+
+    result = translate(audio_file)
+    client = OpenAI(api_key=openai_api_key)
+    response = client.chat.completions.create(
+    model="gpt-4o",
+    messages=[
+        {"role": "system", "content": transcribe_prompt},
+        {"role": "user", "content": str(result)},
+    ]
+    )
+    submitted = st.form_submit_button("Submit")
+    st.write("### Answer")
+    st.info(result['text'])
 
 
-st.sidebar.header("Play Original Audio File")
-st.sidebar.audio(audio_file)
+
+
+    # if st.sidebar.button("Transcribe Audio"):
+    #     if audio_file is not None:
+    #         st.sidebar.success("Transcribing Audio")
+    #         transcription = model.transcribe(upload_file.name)
+    #         st.sidebar.success("Transcription Complete")
+    #         st.markdown(transcription["text"])
+    #     else:
+    #         st.sidebar.error("Please upload an audio file")
+
+
+    # st.sidebar.header("Play Original Audio File")
+    # st.sidebar.audio(upload_file)
